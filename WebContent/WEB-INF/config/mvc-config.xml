@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+	DispatcherServlet이 읽어서 실행하는 파일
+	 - View와 연관된 처리를 수행하는 도구들을 등록
+	 - 주로 컨트롤러를 이곳에 등록
+ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+			xmlns:mvc="http://www.springframework.org/schema/mvc"
+			xmlns:context="http://www.springframework.org/schema/context"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:schemaLocation="
+			http://www.springframework.org/schema/beans 
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/mvc
+			http://www.springframework.org/schema/mvc/spring-mvc.xsd
+			http://www.springframework.org/schema/context
+			http://www.springframework.org/schema/context/spring-context.xsd
+			">
+	<!-- db 연결 클래스(dbcp방식이 아닌 일반 방식) -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		<property name="username" value="study"></property>	
+		<property name="password" value="hard"></property>	
+	</bean>
+
+	<bean name="/" class="spring_controller.Maincontroller"></bean>
+	
+	<!--db명령 처리 클래스  -->
+	<bean id = "jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	<!-- 의존성 주입(DI) -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- DAO -->
+	<bean id="memoDao" class="spring.repository.MemoDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+	
+	<!-- 작성 -->	
+	<bean name="/write" class="spring_controller.Writecontroller">
+		<property name="memoDao" ref="memoDao"></property>
+	</bean>
+	<!-- 리스트 -->
+	<bean name="/list" class="spring_controller.Listcontroller">
+		<property name="memoDao" ref="memoDao"></property>
+	</bean>
+</beans>
+
+
+
+
