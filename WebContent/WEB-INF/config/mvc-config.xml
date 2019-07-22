@@ -26,7 +26,6 @@
 		<property name="password" value="hard"></property>	
 	</bean>
 
-	<bean name="/" class="spring_controller.Maincontroller"></bean>
 	
 	<!--db명령 처리 클래스  -->
 	<bean id = "jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
@@ -41,6 +40,8 @@
 	
 	
 	<!-- 작성 -->	
+	<bean name="/" class="spring_controller.Maincontroller"></bean>
+	
 	<bean name="/write" class="spring_controller.Writecontroller">
 		<property name="memoDao" ref="memoDao"></property>
 	</bean>
